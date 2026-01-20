@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% from "macros.html" import input_field, button %}
+
+{% block title %}Registrace - Task Manager{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>📝 Task Manager</h1>
+            <h2>Vytvoř si účet</h2>
+            <p>Začni organizovat své úkoly</p>
+        </div>
+
+        <form method="POST" class="auth-form">
+            {{ input_field('username', 'Uživatelské jméno', autofocus=true) }}
+            <small class="form-hint">Pouze písmena, čísla a podtržítko (3-80 znaků)</small>
+            {{ input_field('password', 'Heslo', type='password') }}
+            <small class="form-hint">Minimálně 4 znaky</small>
+            {{ button('Zaregistrovat', block=true) }}
+        </form>
+
+        <div class="auth-footer">
+            <p>Už máš účet? <a href="{{ url_for('login') }}">Přihlas se</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

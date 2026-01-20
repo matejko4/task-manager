@@ -1,0 +1,104 @@
+{# ============ MAKRO PRO INPUT FIELD ============ #}
+{% macro input_field(name, label, type='text', required=true, autofocus=false, value='') %}
+<div class="form-group">
+    <label for="{{ name }}">{{ label }}</label>
+    <input type="{{ type }}" 
+           id="{{ name }}" 
+           name="{{ name }}" 
+           value="{{ value|e }}"
+           {% if required %}required{% endif %}
+           {% if autofocus %}autofocus{% endif %}>
+</div>
+{% endmacro %}
+
+{# ============ MAKRO PRO TEXTAREA ============ #}
+{% macro textarea_field(name, label, required=false, rows=4, value='') %}
+<div class="form-group">
+    <label for="{{ name }}">{{ label }}</label>
+    <textarea id="{{ name }}" 
+              name="{{ name }}" 
+              rows="{{ rows }}"
+              {% if required %}required{% endif %}>{{ value|e }}</textarea>
+</div>
+{% endmacro %}
+
+{# ============ MAKRO PRO SELECT (PRIORITA) ============ #}
+{% macro priority_select(name='priority', selected='medium') %}
+<div class="form-group">
+    <label for="{{ name }}">Priorita</label>
+    <select id="{{ name }}" name="{{ name }}">
+        <option value="low" {% if selected == 'low' %}selected{% endif %}>🟢 Nízká</option>
+        <option value="medium" {% if selected == 'medium' %}selected{% endif %}>🟡 Střední</option>
+        <option value="high" {% if selected == 'high' %}selected{% endif %}>🔴 Vysoká</option>
+    </select>
+</div>
+{% endmacro %}
+
+{# ============ MAKRO PRO TLAČÍTKO ============ #}
+{% macro button(text, type='submit', btn_class='btn-primary', block=false) %}
+<button type="{{ type }}" class="btn {{ btn_class }}{% if block %} btn-block{% endif %}">
+    {{ text }}
+</button>
+{% endmacro %}
+
+{# ============ MAKRO PRO TASK CARD ============ #}
+{% macro task_card(task) %}
+<div class="task-card {% if task.completed %}completed{% endif %} priority-{{ task.priority }}">
+    <div class="task-header">
+        <h3 class="task-title">{{ task.title|e }}</h3>
+        <span class="task-priority priority-badge-{{ task.priority }}">
+            {% if task.priority == 'high' %}🔴 Vysoká
+            {% elif task.priority == 'medium' %}🟡 Střední
+            {% else %}🟢 Nízká
+            {% endif %}
+        </span>
+    </div>
+    
+    {% if task.description %}
+    <p class="task-description">{{ task.description|e }}</p>
+    {% endif %}
+    
+    <div class="task-actions">
+        <a href="{{ url_for('toggle_task', task_id=task.id) }}" 
+           class="btn btn-sm {% if task.completed %}btn-warning{% else %}btn-success{% endif %}">
+            {% if task.completed %}↩️ Obnovit{% else %}✅ Dokončit{% endif %}
+        </a>
+        <a href="{{ url_for('edit_task', task_id=task.id) }}" class="btn btn-sm btn-secondary">
+            ✏️ Upravit
+        </a>
+        <a href="{{ url_for('delete_task', task_id=task.id) }}" 
+           class="btn btn-sm btn-danger"
+           onclick="return confirm('Opravdu chceš smazat tento úkol?')">
+            🗑️ Smazat
+        </a>
+    </div>
+</div>
+{% endmacro %}
+
+{# ============ MAKRO PRO STAT CARD ============ #}
+{% macro stat_card(icon, value, label, card_class='') %}
+<div class="stat-card {{ card_class }}">
+    <div class="stat-icon">{{ icon }}</div>
+    <div class="stat-info">
+        <h3>{{ value }}</h3>
+        <p>{{ label }}</p>
+    </div>
+</div>
+{% endmacro %}
+
+{# ============ MAKRO PRO NAVBAR ============ #}
+{% macro navbar(username) %}
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="nav-brand">
+            <a href="{{ url_for('dashboard') }}">📝 Task Manager</a>
+        </div>
+        <div class="nav-menu">
+            <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+            <a href="{{ url_for('add_task') }}" class="nav-link">Přidat úkol</a>
+            <span class="nav-user">👤 {{ username|e }}</span>
+            <a href="{{ url_for('logout') }}" class="nav-link logout">Odhlásit</a>
+        </div>
+    </div>
+</nav>
+{% endmacro %}

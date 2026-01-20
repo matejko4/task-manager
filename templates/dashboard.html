@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% from "macros.html" import navbar, stat_card, task_card %}
+
+{% block title %}Dashboard - Task Manager{% endblock %}
+
+{% block navbar %}
+    {{ navbar(user.username) }}
+{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h1>Vítej, {{ user.username|e }}! 👋</h1>
+        <p class="subtitle">Přehled tvých úkolů</p>
+    </div>
+
+    <div class="stats-grid">
+        {{ stat_card('📊', total, 'Celkem úkolů', 'stat-total') }}
+        {{ stat_card('✅', completed, 'Dokončeno', 'stat-completed') }}
+        {{ stat_card('⏳', pending, 'Čeká', 'stat-pending') }}
+    </div>
+
+    <div class="quick-actions">
+        <a href="{{ url_for('add_task') }}" class="btn btn-primary">➕ Přidat nový úkol</a>
+    </div>
+
+    <div class="tasks-section">
+        <h2>Tvé úkoly</h2>
+        <div class="tasks-list">
+            {% if tasks %}
+                {% for task in tasks %}
+                    {{ task_card(task) }}
+                {% endfor %}
+            {% else %}
+                <div class="empty-state">
+                    <p>🎉 Nemáš žádné úkoly. Přidej si první!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

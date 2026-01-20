@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "macros.html" import input_field, button %}
+
+{% block title %}Login - Task Manager{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <div class="auth-header">
+            <h1>📝 Task Manager</h1>
+            <h2>Vítej zpět!</h2>
+            <p>Přihlas se a spravuj své úkoly</p>
+        </div>
+
+        <form method="POST" class="auth-form">
+            {{ input_field('username', 'Uživatelské jméno', autofocus=true) }}
+            {{ input_field('password', 'Heslo', type='password') }}
+            {{ button('Přihlásit', block=true) }}
+        </form>
+
+        <div class="auth-footer">
+            <p>Nemáš účet? <a href="{{ url_for('register') }}">Zaregistruj se</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
